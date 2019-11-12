@@ -11,12 +11,9 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-Route::get('/', function(){
-    $redis = app()->make('redis');
-    $redis->set('key1', 'testValue');
-    return $redis->get("key1");
+Route::get('/', function () {
+    return view('welcome');
 });
+
+Route::get('/article/{id}', 'BlogController@showArticle');
+Route::get('/home', 'HomeController@index');
