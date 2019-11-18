@@ -12,8 +12,10 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('home.index');
+    // return view('welcome');
 });
 
 Route::get('/article/{id}', 'BlogController@showArticle');
-Route::get('/home', 'HomeController@index');
+Route::get('/blog', 'BlogController@showBlog')->name('blog');
+Route::get('/home', 'HomeController@index')->name('home.index');

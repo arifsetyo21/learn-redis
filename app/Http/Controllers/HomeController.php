@@ -18,7 +18,7 @@ class HomeController extends Controller
         // only display value 
         foreach ($popular as $value) {
             $id = str_replace('article:', '', $value);
-            echo 'Article ' . $id . " is popular" . "<br>";
+            echo 'Article ' . $id . " is popular, reach " . $storage->zScore('articleViews', $value) . " views" . "<br>";
         }
     }
 }

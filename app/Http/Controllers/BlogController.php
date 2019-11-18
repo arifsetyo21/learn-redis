@@ -3,10 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use App\Contracts\PostContract as PostContract;
 
 class BlogController extends Controller
 {
+
+   private $post;
+
+   public function __construct(PostContract $post){
+      $this->post = $post;
+   }
+
+   public function showBlog(){
+
+      DB::connection()->enableQueryLog();
+
+      $post = $this->post->fetchAll();
+
+      $log = DB::getQueryLog();
+
+      print_r($log);
+
+      return view('home')->with('posts', $post);
+   }
+
    public function showArticle($id){
       $storage = Redis::connection();
       $this->id = $id;
