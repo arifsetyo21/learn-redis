@@ -23,10 +23,6 @@ class Post extends Model implements PostContract
     */
     protected $fillable = ['title', 'author', 'content'];
 
-    public function __construct(){
-        $this->storage = Redis::Connection();
-    }
-
     public function fetchAll(){
 
         $result = Cache::remember('blog_posts_cache', now()->addMinutes(1), function () {
@@ -39,7 +35,8 @@ class Post extends Model implements PostContract
     public function fetch($id){
         $this->id = $id;
 
-        $this->storage->pipeline(function ($pipe) {
+        $redis = new Redis();
+        $redis->pipeline(function ($pipe) {
             $pipe->zIncrBy('articleViews', 1, 'article:' . $this->id);
             $pipe->incr('article:' . $this->id . ':views');
         });

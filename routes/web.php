@@ -18,4 +18,9 @@ Route::get('/', function () {
 
 Route::get('/article/{id}', 'BlogController@showArticle');
 Route::get('/blog', 'BlogController@showBlog')->name('blog');
+Route::get('/blog/filtered/{category}', 'BlogController@filteredShowBlog')->name('blog.filtered');
+
 Route::get('/home', 'HomeController@index')->name('home.index');
+
+Route::get('/admin/add', 'AdminController@showAddArticle')->name('admin.showAddArticle');
+Route::post('/admin/add', 'AdminController@addArticle')->name('admin.addArticle');
