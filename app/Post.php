@@ -33,15 +33,23 @@ class Post extends Model implements PostContract
     }
 
     public function fetch($id){
+
         $this->id = $id;
 
-        $redis = new Redis();
-        $redis->pipeline(function ($pipe) {
+        // $redis = new Redis();
+        Redis::pipeline(function ($pipe) {
+            // Increment number for count viewer in sorted sets for display popular post
             $pipe->zIncrBy('articleViews', 1, 'article:' . $this->id);
-            $pipe->incr('article:' . $this->id . ':views');
+
+            // Increment number for count viewer with string data structured
+            // $pipe->incr('article:' . $this->id . ':views');
         });
 
         return $this->where('id', $id)->first();
+    }
+
+    public function filteredFetch($ids){
+        return $this->whereIn('id', $ids)->get();
     }
 
     public function getViews(){

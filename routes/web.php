@@ -16,7 +16,7 @@ Route::get('/', function () {
     // return view('welcome');
 });
 
-Route::get('/article/{id}', 'BlogController@showArticle');
+Route::get('/article/{id}', 'BlogController@showArticle')->name('article.show');
 Route::get('/blog', 'BlogController@showBlog')->name('blog');
 Route::get('/blog/filtered/{category}', 'BlogController@filteredShowBlog')->name('blog.filtered');
 

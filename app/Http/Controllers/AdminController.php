@@ -34,13 +34,16 @@ class AdminController extends Controller
 
             if($request->tags != ''){
                 $tags = \explode(', ', trim($request->tags));
-                // return dd($tags);
+
                 foreach( $tags as $tag){
+                    // Menambahkan sorted sets untuk menjaga urutan artikel
                     // Menambahkan member ke dalam sorted sets dengan key article:tag:nama_tag 
                     Redis::zadd('article:tag:' . trim($tag), $result->id, $result->id);
                     // Menambahkan data kayak array ke key yang bertipe sets
+                    // Untuk melihat daftar tags pada detail post
                     Redis::sadd('article:' . $result->id . ':tags', trim($tag));
                     // Menambahkan tag ke daftar tag yang bertipe sets
+                    // Untuk menampilkan semua tags pada tampilan blog_posts
                     Redis::sadd('article:tags', trim($tag));
                 }
 
