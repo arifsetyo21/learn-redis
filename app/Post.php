@@ -49,7 +49,13 @@ class Post extends Model implements PostContract
     }
 
     public function filteredFetch($ids){
-        return $this->whereIn('id', $ids)->get();
+        $result = Cache::remember('blog_posts_cache:' . implode(':', $ids), now()->addMinutes(1), function () use ($ids) {
+            
+            return $this->whereIn('id', $ids)->get();
+        });
+
+        return $result;
+        // return $this->whereIn('id', $ids)->get();
     }
 
     public function getViews(){

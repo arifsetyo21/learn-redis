@@ -68,11 +68,18 @@ class BlogController extends Controller
    }
 
    public function filteredShowBlog($tag){
+      DB::connection()->enableQueryLog();
+
       $articles_id = Redis::zRange('article:tag:' . $tag, '0', '-1');
 
       $posts = $this->post->filteredFetch($articles_id);
 
       $tags = Redis::sRandMember('article:tags', 4);
+
+      $log = DB::getQueryLog();
+
+      print_r($log);
+      
       return view('home')->with(['posts' => $posts, 'tags' => $tags]);
    }
 }
